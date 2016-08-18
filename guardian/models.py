@@ -31,11 +31,11 @@ class BaseObjectPermission(models.Model):
             unicode(self.permission.codename))
 
     def save(self, *args, **kwargs):
-        content_type = get_content_type(self.content_object)
-        if content_type != self.permission.content_type:
-            raise ValidationError("Cannot persist permission not designed for "
-                                  "this class (permission's type is %r and object's type is %r)"
-                                  % (self.permission.content_type, content_type))
+        # content_type = get_content_type(self.content_object)
+        # if content_type != self.permission.content_type:
+        #     raise ValidationError("Cannot persist permission not designed for "
+        #                           "this class (permission's type is %r and object's type is %r)"
+        #                           % (self.permission.content_type, content_type))
         return super(BaseObjectPermission, self).save(*args, **kwargs)
 
 
