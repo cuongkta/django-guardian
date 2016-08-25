@@ -117,7 +117,7 @@ class ObjectPermissionChecker(object):
     def get_user_perms(self, obj):
         ctype = get_content_type(obj)
 
-        perms_qs = Permission.objects.filter(content_type=ctype)
+        perms_qs = Permission.objects.all()  # filter(content_type=ctype)
         user_filters = self.get_user_filters(obj)
         user_perms_qs = perms_qs.filter(**user_filters)
         user_perms = user_perms_qs.values_list("codename", flat=True)
@@ -127,7 +127,7 @@ class ObjectPermissionChecker(object):
     def get_group_perms(self, obj):
         ctype = get_content_type(obj)
 
-        perms_qs = Permission.objects.filter(content_type=ctype)
+        perms_qs = Permission.objects.all()  # filter(content_type=ctype)
         group_filters = self.get_group_filters(obj)
         group_perms_qs = perms_qs.filter(**group_filters)
         group_perms = group_perms_qs.values_list("codename", flat=True)
@@ -148,7 +148,7 @@ class ObjectPermissionChecker(object):
         if key not in self._obj_perms_cache:
             if self.user and self.user.is_superuser:
                 perms = list(chain(*Permission.objects
-                                   .filter(content_type=ctype)
+                                   # .filter(content_type=ctype)
                                    .values_list("codename")))
             elif self.user:
                 # Query user and group permissions separately and then combine
@@ -159,7 +159,7 @@ class ObjectPermissionChecker(object):
             else:
                 group_filters = self.get_group_filters(obj)
                 perms = list(set(chain(*Permission.objects
-                                       .filter(content_type=ctype)
+                                       # .filter(content_type=ctype)
                                        .filter(**group_filters)
                                        .values_list("codename"))))
             self._obj_perms_cache[key] = perms
@@ -188,7 +188,7 @@ class ObjectPermissionChecker(object):
         if self.user and self.user.is_superuser:
             perms = list(chain(
                 *Permission.objects
-                .filter(content_type=ctype)
+                # .filter(content_type=ctype)
                 .values_list("codename")))
 
             for pk in pks:
